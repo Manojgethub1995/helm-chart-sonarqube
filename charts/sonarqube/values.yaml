@@ -74,10 +74,10 @@ networkPolicy:
 
 # also install the nginx ingress helm chart
 nginx:
-  enabled: false
+  enabled: true
 
 ingress:
-  enabled: false
+  enabled: true
   # Used to create an Ingress record.
   hosts:
     - name: sonarqube.your-org.com
@@ -132,18 +132,18 @@ affinity: {}
 # taint a node with the following command to mark it as not schedulable for new pods
 # kubectl taint nodes <node> sonarqube=true:NoSchedule
 # The following statement will tolerate this taint and as such reverse a node for sonarqube
-tolerations: []
-  - key: "sonarqube"
-    operator: "Equal"
-    value: "true"
-    effect: "NoSchedule"
+#tolerations: []
+#  - key: "sonarqube"
+#    operator: "Equal"
+#    value: "true"
+#    effect: "NoSchedule"
 
 # Node labels for pod assignment
 # Ref: https://kubernetes.io/docs/user-guide/node-selection/
 # add a label to a node with the following command
 # kubectl label node <node> sonarqube=true
 nodeSelector: {}
-  sonarqube: "true"
+#  sonarqube: "true"
 
 # hostAliases allows the modification of the hosts file inside a container
 hostAliases: []
@@ -212,9 +212,9 @@ extraContainers: []
 ## The cacerts file will be set via SONARQUBE_WEB_JVM_OPTS and SONAR_CE_JAVAOPTS
 ##
 caCerts:
-  enabled: false
+  enabled: true
   image: adoptopenjdk/openjdk11:alpine
-  secret: your-secret
+  secret: my-secret
 
 initSysctl:
   enabled: true
@@ -234,13 +234,13 @@ initFs:
     privileged: true
 
 prometheusExporter:
-  enabled: false
+  enabled: true
   # jmx_prometheus_javaagent version to download from Maven Central
   version: "0.17.2"
   # Alternative full download URL for the jmx_prometheus_javaagent.jar (overrides prometheusExporter.version)
   # downloadURL: ""
   # if you need to ignore TLS certificates for whatever reason enable the following flag
-  noCheckCertificate: false
+  noCheckCertificate: true
 
   # Ports for the jmx prometheus agent to export metrics at
   webBeanPort: 8000
@@ -268,9 +268,9 @@ prometheusMonitoring:
   #
   podMonitor:
     # Create PodMonitor Resource for Prometheus scraping
-    enabled: false
+    enabled: true
     # Specify a custom namespace where the PodMonitor will be created
-    namespace: "default"
+    namespace: "sonarqube"
     # Specify the interval how often metrics should be scraped
     interval: 30s
     # Specify the timeout after a scrape is ended
@@ -300,7 +300,7 @@ plugins:
   # netrcCreds: ""
 
   # Set to true to not validate the server's certificate to download plugin
-  noCheckCertificate: false
+  noCheckCertificate: true
   securityContext:
     runAsUser: 1000
     runAsGroup: 1000
